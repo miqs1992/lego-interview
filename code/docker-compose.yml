@@ -1,0 +1,44 @@
+services:
+  postgres:
+    image: postgres:18-alpine
+    container_name: lego-postgres_dev
+    ports:
+      - $DB_PORT:5432
+    environment:
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+      - POSTGRES_DB=$DB_NAME
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      - data
+
+  postgres-test:
+    image: postgres:18-alpine
+    container_name: lego-postgres_test
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=lego_test
+    networks:
+      - data
+
+  adminer:
+    container_name: lego-adminer
+    image: adminer
+    ports:
+      - $ADMINER_PORT:8080
+    depends_on:
+      - postgres
+      - postgres-test
+    networks:
+      - data
+
+volumes:
+  postgres_dev_data:
+  postgres_test_data:
+
+networks:
+  data:
