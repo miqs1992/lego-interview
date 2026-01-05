@@ -36,6 +36,30 @@ services:
     networks:
       - data
 
+  mqtt:
+    image: eclipse-mosquitto:2
+    container_name: mqtt
+    restart: unless-stopped
+    ports:
+      - $QUEUE_PORT:1883
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+
+  mqtt-explorer:
+    image: smeagolworms4/mqtt-explorer
+    container_name: mqtt-explorer
+    restart: unless-stopped
+    depends_on:
+      - mqtt
+    ports:
+      - "4000:4000"
+    environment:
+      HTTP_PORT: 4000
+      MQTT_BROKER: mqtt
+      MQTT_PORT: $QUEUE_PORT
+
 volumes:
   postgres_dev_data:
   postgres_test_data:

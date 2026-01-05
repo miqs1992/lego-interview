@@ -54,3 +54,15 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Mosquitto runtime data (retained messages, persistence)
+mosquitto/data/
+
+# Mosquitto logs
+mosquitto/log/
+
+# Credentials & secrets
+mosquitto/config/passwordfile
+mosquitto/config/*.key
+mosquitto/config/*.crt
+mosquitto/config/*.pem

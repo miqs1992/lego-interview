@@ -10,6 +10,10 @@ const globalConfigurationLoader = (): GlobalConfiguration => ({
     password: process.env.DB_PASSWORD || 'postgres',
     database: process.env.DB_NAME || 'lego_db',
   },
+  queue: {
+    host: process.env.QUEUE_HOST || 'localhost',
+    port: parseInt(process.env.QUEUE_PORT || '1883', 10),
+  }
 });
 
 export default globalConfigurationLoader;

@@ -8,6 +8,10 @@ export interface GlobalConfiguration {
     password: string;
     database: string;
   };
+  queue: {
+    host: string;
+    port: number;
+  }
 }
 
 export default GlobalConfiguration;

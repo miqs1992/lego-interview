@@ -20,11 +20,21 @@ export class ConfigurationService {
     })! as GlobalConfiguration['database'];
   }
 
+  get queue(): GlobalConfiguration['queue'] {
+    return this.configService.get<GlobalConfiguration['queue']>('queue', {
+      infer: true,
+    })! as GlobalConfiguration['queue'];
+  }
+
   isProduction(): boolean {
     return this.nodeEnv === 'production';
   }
 
   isTest(): boolean {
     return this.nodeEnv === 'test';
+  }
+
+  isDevelopment(): boolean {
+    return this.nodeEnv === 'development';
   }
 }

@@ -16,6 +16,6 @@ export const typeOrmConfig = (
   namingStrategy: new SnakeNamingStrategy(),
 
   synchronize: !config.isProduction(),
-  logging: !config.isProduction(),
+  logging: config.isDevelopment(),
   dropSchema: config.isTest(),
 });
