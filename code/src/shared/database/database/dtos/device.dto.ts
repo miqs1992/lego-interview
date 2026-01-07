@@ -3,3 +3,9 @@ export interface CreateDeviceDto {
   macAddress: string;
   groupId: string;
 }
+
+export interface ListDevicesPayload {
+  page?: number;
+  limit?: number;
+  groupId?: string;
+}

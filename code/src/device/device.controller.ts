@@ -1,29 +1,28 @@
-import { Controller, Get, Logger } from '@nestjs/common';
-import { Ctx, EventPattern, MqttContext, Payload } from "@nestjs/microservices";
-import { QueueService } from "../shared/queue/queue.service";
+import { Controller, Get, Logger, Param, ParseUUIDPipe, Post, Query } from '@nestjs/common';
+import { PaginationDto } from '../shared/dtos/pagination.dto';
+import { DeviceService } from './device.service';
 
 @Controller('devices')
 export class DeviceController {
   private readonly logger: Logger = new Logger(DeviceController.name);
 
-  constructor(
-    private queueService: QueueService,
-  ) {}
+  constructor(private readonly deviceService: DeviceService) {}
 
-  @EventPattern('/devices/+/connection')
-  handle(
-    @Payload() data: { status: 'online' | 'offline' },
-    @Ctx() ctx: MqttContext,
-  ) {
-    const deviceId = ctx.getTopic().split('/')[2];
+  @Get('/')
+  async listDevices(@Query() { page, limit }: PaginationDto) {
+    this.logger.log(`Listing devices - Page: ${page}, Limit: ${limit}`);
 
-    this.logger.log(`Device ${deviceId} is now ${data.status}`);
+    const { devices, total } = await this.deviceService.listDevices(page, limit);
+
+    return { devices, total, page, limit };
   }
 
-  @Get('/test-emit')
-  async testEmit() {
-    const testDeviceId = 'test-device-123';
-    await this.queueService.emitMessage(testDeviceId);
-    return { message: `Emitted test message for device ${testDeviceId}` };
+  @Post('/:id/restart')
+  async restartDevice(@Param('id', ParseUUIDPipe) id: string) {
+    this.logger.log(`Restart command sent to device ${id}`);
+
+    await this.deviceService.restartDevice(id);
+
+    return { message: `Restart command sent to device ${id}` };
   }
 }

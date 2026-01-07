@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, CreateDateColumn } from 'typeorm';
 import { DeviceEntity } from './device.entity';
 
 @Entity('groups')
@@ -8,6 +8,9 @@ export class GroupEntity {
 
   @Column({ unique: true })
   name: string;
+
+  @CreateDateColumn()
+  createdAt: Date;
 
   @OneToMany(() => DeviceEntity, (device) => device.group)
   devices: DeviceEntity[];

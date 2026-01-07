@@ -11,7 +11,7 @@ export interface GlobalConfiguration {
   queue: {
     host: string;
     port: number;
-  }
+  };
 }
 
 export default GlobalConfiguration;

@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientProxy } from "@nestjs/microservices";
-import { MQTT_CLIENT } from "./mqtt.config";
+import { ClientProxy } from '@nestjs/microservices';
+import { MQTT_CLIENT } from './mqtt.config';
+import { QueuePattern, setPatternIdentifier } from './queue.pattern';
 
 @Injectable()
 export class QueueService {
@@ -9,9 +10,7 @@ export class QueueService {
     private readonly mqttClient: ClientProxy,
   ) {}
 
-  async emitMessage(deviceId: string) {
-    return this.mqttClient.emit(`devices/${deviceId}/connection`, {
-      status: 'online',
-    });
+  emitMessage<T = never>(pattern: QueuePattern, identifier: string, payload: T) {
+    return this.mqttClient.emit(setPatternIdentifier(pattern, identifier), payload);
   }
 }

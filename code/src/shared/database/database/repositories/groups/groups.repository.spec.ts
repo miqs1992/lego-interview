@@ -18,6 +18,10 @@ describe('GroupsRepository', () => {
     dataSource = moduleRef.get<DataSource>(DataSource);
   });
 
+  beforeEach(async () => {
+    await dataSource.synchronize(true);
+  });
+
   afterAll(async () => {
     await dataSource.destroy();
   });

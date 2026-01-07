@@ -13,7 +13,7 @@ const globalConfigurationLoader = (): GlobalConfiguration => ({
   queue: {
     host: process.env.QUEUE_HOST || 'localhost',
     port: parseInt(process.env.QUEUE_PORT || '1883', 10),
-  }
+  },
 });
 
 export default globalConfigurationLoader;
