@@ -1,7 +1,7 @@
 import { Controller, Get, Logger, Param, ParseUUIDPipe } from '@nestjs/common';
-import { QueueService } from '../shared/queue/queue.service';
+import { QueueService } from '../../shared/queue/queue.service';
 import { ApiTags } from '@nestjs/swagger';
-import { QueuePattern } from '../shared/queue/queue.pattern';
+import { QueuePattern } from '../../shared/queue/queue.pattern';
 
 @Controller('fake-devices')
 @ApiTags('Fake Devices')

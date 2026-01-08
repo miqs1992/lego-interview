@@ -46,6 +46,7 @@ describe('DevicesRepository', () => {
       expect(device.id).toBeDefined();
       expect(device.name).toBe('Test Device');
       expect(device.macAddress).toBe('00:11:22:33:44:55');
+      expect(device.group.name).toBe(group.name);
     });
 
     it('throws if device exists', async () => {

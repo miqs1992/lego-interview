@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeviceService } from './device.service';
-import { QueueService } from '../shared/queue/queue.service';
-import { DevicesRepository } from '../shared/database/database/repositories/devices/devices.repository';
-import { HeartbeatsRepository } from '../shared/database/database/repositories/heartbeats/heartbeats.repository';
-import { QueuePattern } from '../shared/queue/queue.pattern';
-import { DeviceEntity } from '../shared/database/database/entities/device.entity';
-import { DeviceStatus } from '../shared/database/database/enums/device-status.enum';
+import { QueueService } from '../../shared/queue/queue.service';
+import { DevicesRepository } from '../../shared/database/database/repositories/devices/devices.repository';
+import { HeartbeatsRepository } from '../../shared/database/database/repositories/heartbeats/heartbeats.repository';
+import { QueuePattern } from '../../shared/queue/queue.pattern';
+import { DeviceEntity } from '../../shared/database/database/entities/device.entity';
+import { DeviceStatus } from '../../shared/database/database/enums/device-status.enum';
 import { subMinutes } from 'date-fns';
 
 describe('DeviceService', () => {
@@ -96,6 +96,7 @@ describe('DeviceService', () => {
         id: mockDevice.id,
         name: mockDevice.name,
         createdAt: mockDevice.createdAt,
+        macAddress: mockDevice.macAddress,
         latestHeartbeatAt: mockDevice.latestHeartbeat!.createdAt,
         group: mockDevice.group.name,
         status: DeviceStatus.ONLINE,
@@ -130,6 +131,7 @@ describe('DeviceService', () => {
       expect(result.devices[0]).toEqual({
         id: mockDevice.id,
         name: mockDevice.name,
+        macAddress: mockDevice.macAddress,
         createdAt: mockDevice.createdAt,
         latestHeartbeatAt: mockDevice.latestHeartbeat!.createdAt,
         group: mockDevice.group.name,
@@ -160,6 +162,7 @@ describe('DeviceService', () => {
         id: mockDevice.id,
         name: mockDevice.name,
         createdAt: mockDevice.createdAt,
+        macAddress: mockDevice.macAddress,
         latestHeartbeatAt: null,
         group: mockDevice.group.name,
         status: DeviceStatus.OFFLINE,

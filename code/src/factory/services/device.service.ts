@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { DevicesRepository } from '../shared/database/database/repositories/devices/devices.repository';
-import { DeviceLatestHeartbeatView } from '../shared/database/database/views/device-latest-heartbeat.view';
-import { DeviceStatus } from '../shared/database/database/enums/device-status.enum';
-import { QueueService } from '../shared/queue/queue.service';
-import { QueuePattern } from '../shared/queue/queue.pattern';
-import { ListDevicesResult } from './device.types';
+import { DevicesRepository } from '../../shared/database/database/repositories/devices/devices.repository';
+import { DeviceLatestHeartbeatView } from '../../shared/database/database/views/device-latest-heartbeat.view';
+import { DeviceStatus } from '../../shared/database/database/enums/device-status.enum';
+import { QueueService } from '../../shared/queue/queue.service';
+import { QueuePattern } from '../../shared/queue/queue.pattern';
+import { DeviceWithStatusData, ListDevicesResult } from '../device.types';
 import { differenceInMinutes } from 'date-fns';
-import { HeartbeatsRepository } from '../shared/database/database/repositories/heartbeats/heartbeats.repository';
+import { HeartbeatsRepository } from '../../shared/database/database/repositories/heartbeats/heartbeats.repository';
+import { CreateDeviceDto } from '../dtos/create-device.dto';
 
 const DEVICE_OFFLINE_THRESHOLD_MIN = 10;
 
@@ -26,6 +27,7 @@ export class DeviceService {
       devices: devices.map((device) => ({
         id: device.id,
         name: device.name,
+        macAddress: device.macAddress,
         createdAt: device.createdAt,
         latestHeartbeatAt: device.latestHeartbeat?.createdAt || null,
         group: device.group.name,
@@ -52,6 +54,20 @@ export class DeviceService {
     }
 
     return this.heartbeatsRepository.createHeartbeat(deviceId, imageName);
+  }
+
+  async createDevice(payload: CreateDeviceDto): Promise<DeviceWithStatusData> {
+    const newDevice = await this.devicesRepository.createDevice(payload);
+
+    return {
+      id: newDevice.id,
+      name: newDevice.name,
+      macAddress: newDevice.macAddress,
+      createdAt: newDevice.createdAt,
+      latestHeartbeatAt: null,
+      group: newDevice.group.name,
+      status: DeviceStatus.OFFLINE,
+    };
   }
 
   private isDeviceOnline(latestHeartbeat: DeviceLatestHeartbeatView | undefined): boolean {

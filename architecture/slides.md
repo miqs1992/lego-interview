@@ -93,7 +93,7 @@ graph TD
 The API serves as the interface for the different engineering teams to trigger deployments without worrying about which specific 1000+ IP addresses correspond to their production lines. We will treat this as a RESTful API. The core resources are Devices, Groups (to handle the "Types" of lines), and Deployments.
 
 - **Group Management (The Logical Layer)**
-  - `GET /groups` See available production line types (e.g., "Molding", "Packaging", "Assembly")
+  - `GET /groups` See available production line types (e.g., "Molding", "Packaging", "Printing")
   - `POST /groups/{groupId}` Update configuration variables common to all devices in that group
 
 ---

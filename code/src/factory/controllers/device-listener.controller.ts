@@ -1,7 +1,7 @@
 import { Controller, Logger } from '@nestjs/common';
 import { Ctx, EventPattern, MqttContext } from '@nestjs/microservices';
-import { QueuePattern } from '../shared/queue/queue.pattern';
-import { DeviceService } from './device.service';
+import { QueuePattern } from '../../shared/queue/queue.pattern';
+import { DeviceService } from '../services/device.service';
 
 @Controller('devices-listener')
 export class DeviceListenerController {

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeviceController } from './device.controller';
-import { DeviceService } from './device.service';
-import { ListDevicesResult } from './device.types';
+import { DeviceService } from '../services/device.service';
+import { ListDevicesResult } from '../device.types';
 
 describe('DeviceController', () => {
   let controller: DeviceController;
@@ -9,6 +9,7 @@ describe('DeviceController', () => {
   const deviceServiceMock: Partial<jest.Mocked<DeviceService>> = {
     listDevices: jest.fn(),
     restartDevice: jest.fn(),
+    createDevice: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -45,6 +46,14 @@ describe('DeviceController', () => {
     it('should call deviceService.restartDevice', async () => {
       await controller.restartDevice('device123');
       expect(deviceServiceMock.restartDevice).toHaveBeenCalledWith('device123');
+    });
+  });
+
+  describe('.createDevice', () => {
+    it('should call deviceService.createDevice', async () => {
+      const createDeviceDto = { name: 'New Device', groupId: 'group123', macAddress: '00:11:22:33:44:55' };
+      await controller.createDevice(createDeviceDto);
+      expect(deviceServiceMock.createDevice).toHaveBeenCalledWith(createDeviceDto);
     });
   });
 });

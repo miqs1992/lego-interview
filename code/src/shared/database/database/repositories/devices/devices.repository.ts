@@ -56,7 +56,7 @@ export class DevicesRepository extends Repository<DeviceEntity> {
     const device = this.create({
       name: payload.name,
       macAddress: payload.macAddress,
-      group: { id: payload.groupId } as GroupEntity,
+      group,
     });
     return this.save(device);
   }

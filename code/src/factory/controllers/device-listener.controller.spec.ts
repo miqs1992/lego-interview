@@ -1,7 +1,7 @@
-import { DeviceService } from './device.service';
+import { DeviceService } from '../services/device.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeviceListenerController } from './device-listener.controller';
-import { createMqttContextMock } from '../shared/queue/mqtt.mock';
+import { createMqttContextMock } from '../../shared/queue/mqtt.mock';
 
 describe('DeviceListenerController', () => {
   let controller: DeviceListenerController;
