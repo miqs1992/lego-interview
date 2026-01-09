@@ -116,6 +116,7 @@ The API serves as the interface for the different engineering teams to trigger d
       Response { 
         "updateRequired": true,
         "targetImage": "registry.factory.internal/line-a:v1.3.0",
+        "imageDigest": "sha256:abcdef1234567890...",
         "deploymentId": "dep-998877",
       }
       ```
@@ -127,9 +128,10 @@ The API serves as the interface for the different engineering teams to trigger d
   - `POST /deployments` Trigger an update for a specific type of production line
     - ```json
       Body {
-        "targetGroup": "processTypeA",
+        "targetGroup": "Molding",
         "imageUrl": "registry.factory.internal/process-a-app:v2.4.1",
-        "timeout": 3600,
+        "imageDigest": "sha256:abcdef1234567890...",
+        "signature": "base64-encoded-signature",
         "strategy": "canary", // or all
         "configOverrides": { "THRESHOLD": "0.9" }
       }
@@ -143,7 +145,7 @@ The API serves as the interface for the different engineering teams to trigger d
         "pending": 148 
       }
       ```
-
+  - `POST /deployments/{id}/rollback` Manually trigger rollback to previous version  
 ---
 
 # Potential issues (Scenario A)
@@ -170,10 +172,10 @@ The API serves as the interface for the different engineering teams to trigger d
   - Mitigation (Eventual Consistency): Since we use a "Pull/State" model, as soon as those 10 devices turn on, they will ask the server for their desired state and immediately self-update to the latest version
 
 ---
-layout: center
 class: text-center
 ---
 
 # Thank you
 
+<img src="/assets/avatar-lego.png" class="h-60 mx-auto" />
 <PoweredBySlidev mt-10 />
