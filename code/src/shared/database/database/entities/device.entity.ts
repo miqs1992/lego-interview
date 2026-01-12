@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMan
 import { GroupEntity } from './group.entity';
 import { HeartbeatEntity } from './heartbeat.entity';
 import { DeviceLatestHeartbeatView } from '../views/device-latest-heartbeat.view';
+import { DeviceDataType } from '../enums/device-data-type.enum';
 
 @Entity('devices')
 export class DeviceEntity {
@@ -16,6 +17,9 @@ export class DeviceEntity {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @Column({ type: 'enum', enum: DeviceDataType, nullable: true })
+  dataType: DeviceDataType | null;
 
   @ManyToOne(() => GroupEntity, (group) => group.devices, {
     nullable: false,

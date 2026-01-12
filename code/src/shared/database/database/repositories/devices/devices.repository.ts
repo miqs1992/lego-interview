@@ -4,6 +4,7 @@ import { DeviceEntity } from '../../entities/device.entity';
 import { CreateDeviceDto, ListDevicesPayload } from '../../dtos/device.dto';
 import { GroupEntity } from '../../entities/group.entity';
 import { DeviceLatestHeartbeatView } from '../../views/device-latest-heartbeat.view';
+import { parseDeviceDataType } from '../../enums/device-data-type.enum';
 
 @Injectable()
 export class DevicesRepository extends Repository<DeviceEntity> {
@@ -53,11 +54,15 @@ export class DevicesRepository extends Repository<DeviceEntity> {
       throw new ConflictException(`Group with ID "${payload.groupId}" does not exist`);
     }
 
+    const dataType = parseDeviceDataType(payload.dataType);
+
     const device = this.create({
       name: payload.name,
       macAddress: payload.macAddress,
+      dataType,
       group,
     });
+
     return this.save(device);
   }
 }

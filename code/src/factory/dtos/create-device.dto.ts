@@ -1,6 +1,7 @@
-import { ApiProperty } from '@nestjs/swagger';
-import { IsMACAddress, IsNotEmpty, IsString, IsUUID } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { IsMACAddress, IsNotEmpty, IsString, IsUUID, IsEnum, IsOptional } from 'class-validator';
 import { CreateDeviceDto as DatabaseCreateDeviceDto } from '../../shared/database/database/dtos/device.dto';
+import { DeviceDataType } from '../../shared/database/database/enums/device-data-type.enum';
 
 export class CreateDeviceDto implements DatabaseCreateDeviceDto {
   @ApiProperty({
@@ -26,4 +27,13 @@ export class CreateDeviceDto implements DatabaseCreateDeviceDto {
   @IsMACAddress()
   @IsNotEmpty()
   macAddress: string;
+
+  @ApiPropertyOptional({
+    description: 'The data type of the device',
+    enum: DeviceDataType,
+    example: DeviceDataType.THERMOMETER,
+  })
+  @IsEnum(DeviceDataType)
+  @IsOptional()
+  dataType?: DeviceDataType;
 }

@@ -9,6 +9,8 @@ import { DevicesRepository } from './repositories/devices/devices.repository';
 import { HeartbeatEntity } from './entities/heartbeat.entity';
 import { DeviceLatestHeartbeatView } from './views/device-latest-heartbeat.view';
 import { HeartbeatsRepository } from './repositories/heartbeats/heartbeats.repository';
+import { DeviceDataRepository } from './repositories/device-data/device-data.repository';
+import { DeviceDataEntity } from './entities/device-data.entity';
 
 @Module({
   imports: [
@@ -16,9 +18,9 @@ import { HeartbeatsRepository } from './repositories/heartbeats/heartbeats.repos
       inject: [ConfigurationService],
       useFactory: typeOrmConfig,
     }),
-    TypeOrmModule.forFeature([GroupEntity, DeviceEntity, HeartbeatEntity, DeviceLatestHeartbeatView]),
+    TypeOrmModule.forFeature([GroupEntity, DeviceEntity, HeartbeatEntity, DeviceDataEntity, DeviceLatestHeartbeatView]),
   ],
-  providers: [GroupsRepository, DevicesRepository, HeartbeatsRepository],
-  exports: [TypeOrmModule, GroupsRepository, DevicesRepository, HeartbeatsRepository],
+  providers: [GroupsRepository, DevicesRepository, HeartbeatsRepository, DeviceDataRepository],
+  exports: [TypeOrmModule, GroupsRepository, DevicesRepository, HeartbeatsRepository, DeviceDataRepository],
 })
 export class DatabaseModule {}

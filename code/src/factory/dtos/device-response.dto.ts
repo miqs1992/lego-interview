@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { DeviceStatus } from '../../shared/database/database/enums/device-status.enum';
 import { DeviceWithStatusData, ListDevicesResult } from '../device.types';
+import { DeviceDataType } from '../../shared/database/database/enums/device-data-type.enum';
 
 export class DeviceResponseDto implements DeviceWithStatusData {
   @ApiProperty({
@@ -46,6 +47,13 @@ export class DeviceResponseDto implements DeviceWithStatusData {
     example: DeviceStatus.ONLINE,
   })
   status: DeviceStatus;
+
+  @ApiPropertyOptional({
+    description: 'Data type of the device',
+    example: DeviceDataType.THERMOMETER,
+    nullable: true,
+  })
+  dataType: DeviceDataType | null;
 }
 
 export class ListDevicesResponseDto implements ListDevicesResult {

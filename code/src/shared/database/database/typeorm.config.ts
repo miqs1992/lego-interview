@@ -16,4 +16,9 @@ export const typeOrmConfig = (config: ConfigurationService): TypeOrmModuleOption
   synchronize: !config.isProduction(),
   logging: config.isDevelopment(),
   dropSchema: config.isTest(),
+
+  // Ensure consistent timezone handling
+  extra: {
+    timezone: 'UTC',
+  },
 });

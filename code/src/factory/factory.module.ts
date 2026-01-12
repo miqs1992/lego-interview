@@ -7,10 +7,11 @@ import { DeviceListenerController } from './controllers/device-listener.controll
 import { FakeDeviceController } from './controllers/fake-device.controller';
 import { GroupController } from './controllers/group.controller';
 import { GroupService } from './services/group.service';
+import { DataService } from './services/data.service';
 
 @Module({
   controllers: [DeviceController, FakeDeviceController, DeviceListenerController, GroupController],
   imports: [QueueModule, DatabaseModule],
-  providers: [DeviceService, GroupService],
+  providers: [DeviceService, GroupService, DataService],
 })
 export class FactoryModule {}

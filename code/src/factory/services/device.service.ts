@@ -5,9 +5,9 @@ import { DeviceStatus } from '../../shared/database/database/enums/device-status
 import { QueueService } from '../../shared/queue/queue.service';
 import { QueuePattern } from '../../shared/queue/queue.pattern';
 import { DeviceWithStatusData, ListDevicesResult } from '../device.types';
-import { differenceInMinutes } from 'date-fns';
 import { HeartbeatsRepository } from '../../shared/database/database/repositories/heartbeats/heartbeats.repository';
 import { CreateDeviceDto } from '../dtos/create-device.dto';
+import { differenceInMinutes } from 'date-fns';
 
 const DEVICE_OFFLINE_THRESHOLD_MIN = 10;
 
@@ -29,6 +29,7 @@ export class DeviceService {
         name: device.name,
         macAddress: device.macAddress,
         createdAt: device.createdAt,
+        dataType: device.dataType,
         latestHeartbeatAt: device.latestHeartbeat?.createdAt || null,
         group: device.group.name,
         status: this.isDeviceOnline(device.latestHeartbeat) ? DeviceStatus.ONLINE : DeviceStatus.OFFLINE,
@@ -64,6 +65,7 @@ export class DeviceService {
       name: newDevice.name,
       macAddress: newDevice.macAddress,
       createdAt: newDevice.createdAt,
+      dataType: newDevice.dataType,
       latestHeartbeatAt: null,
       group: newDevice.group.name,
       status: DeviceStatus.OFFLINE,

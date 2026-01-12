@@ -22,7 +22,7 @@ export class GroupEntity {
     description: 'Date when the group was created',
     example: '2026-01-08T12:00:00.000Z',
   })
-  @CreateDateColumn()
+  @CreateDateColumn({ type: 'timestamptz' })
   createdAt: Date;
 
   @OneToMany(() => DeviceEntity, (device) => device.group)
