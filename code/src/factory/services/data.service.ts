@@ -47,7 +47,6 @@ export class DataService {
       await validateOrReject(dto, { whitelist: true, forbidNonWhitelisted: true });
     } catch (errors: unknown) {
       this.logger.error('Invalid MQTT payload');
-      this.logger.error(errors);
       throw new BadRequestException({
         message: 'Invalid MQTT payload',
         errors,
