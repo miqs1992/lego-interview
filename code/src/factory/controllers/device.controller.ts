@@ -4,12 +4,16 @@ import { PaginationDto } from '../../shared/dtos/pagination.dto';
 import { DeviceService } from '../services/device.service';
 import { CreateDeviceDto } from '../dtos/create-device.dto';
 import { DeviceResponseDto, ListDevicesResponseDto, RestartDeviceResponseDto } from '../dtos/device-response.dto';
+import { DataService } from '../services/data.service';
 
 @Controller('devices')
 export class DeviceController {
   private readonly logger: Logger = new Logger(DeviceController.name);
 
-  constructor(private readonly deviceService: DeviceService) {}
+  constructor(
+    private readonly deviceService: DeviceService,
+    private readonly dataService: DataService,
+  ) {}
 
   @ApiOkResponse({
     description: 'List of devices with pagination',
@@ -55,5 +59,18 @@ export class DeviceController {
     await this.deviceService.restartDevice(id);
 
     return { message: `Restart command sent to device ${id}` };
+  }
+
+  @ApiParam({
+    name: 'id',
+    description: 'The UUID of the device',
+    type: 'string',
+    format: 'uuid',
+  })
+  @Get('/:id/data')
+  async getDeviceData(@Param('id', ParseUUIDPipe) id: string) {
+    this.logger.log(`Fetching data for device ${id}`);
+
+    return this.dataService.getDeviceData(id);
   }
 }

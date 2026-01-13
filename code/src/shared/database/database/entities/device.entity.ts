@@ -3,6 +3,7 @@ import { GroupEntity } from './group.entity';
 import { HeartbeatEntity } from './heartbeat.entity';
 import { DeviceLatestHeartbeatView } from '../views/device-latest-heartbeat.view';
 import { DeviceDataType } from '../enums/device-data-type.enum';
+import { DeviceDataEntity } from './device-data.entity';
 
 @Entity('devices')
 export class DeviceEntity {
@@ -33,4 +34,7 @@ export class DeviceEntity {
 
   // Relation to SQL view for latest heartbeat, no decorators should be applied
   latestHeartbeat?: DeviceLatestHeartbeatView;
+
+  @OneToMany(() => DeviceDataEntity, (data) => data.device)
+  dataRecords: DeviceDataEntity[];
 }

@@ -1,6 +1,5 @@
 ---
 theme: bricks
-background: /assets/background.jpg
 title: Senior Software Engineer Case
 info: |
   ## Presentation for 14.01 LEGO interview
@@ -13,9 +12,14 @@ mdc: true
 duration: 30min
 ---
 
-# Senior Software Engineer Case
+<style>
+.slidev-layout.cover {
+  background-image: url('/assets/background.jpg') !important;
+  color: #ff0000;
+}
+</style>
 
-14.01.2026 interview by [Wojtek Mikusek](https://www.linkedin.com/in/wojciech-mikusek-3b3214152/)
+# Senior Software Engineer Case
 
 <div @click="$slidev.nav.next" class="mt-12 py-1" hover:bg="white op-10">
   Press Space to start <carbon:arrow-right />
@@ -35,7 +39,6 @@ duration: 30min
 # Table of contents
 
 <Toc text-sm minDepth="1" maxDepth="2" :skip="[1, 2]" />
-
 
 ---
 

@@ -38,7 +38,7 @@ export class DeviceService {
   }
 
   async restartDevice(deviceId: string) {
-    const device = await this.devicesRepository.findOne({ where: { id: deviceId } });
+    const device = await this.devicesRepository.findById(deviceId);
 
     if (!device) {
       throw new NotFoundException(`Device with ID "${deviceId}" not found`);
@@ -48,7 +48,7 @@ export class DeviceService {
   }
 
   async processHeartbeat(deviceId: string, imageName: string) {
-    const device = await this.devicesRepository.findOne({ where: { id: deviceId } });
+    const device = await this.devicesRepository.findById(deviceId);
 
     if (!device) {
       throw new NotFoundException(`Device with ID "${deviceId}" not found`);

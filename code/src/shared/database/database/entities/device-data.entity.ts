@@ -13,7 +13,7 @@ export class DeviceDataEntity {
   @Column({ type: 'jsonb' })
   data: Record<string, any>;
 
-  @ManyToOne(() => DeviceEntity, (device) => device.heartbeats, {
+  @ManyToOne(() => DeviceEntity, (device) => device.dataRecords, {
     nullable: false,
     onDelete: 'CASCADE',
   })

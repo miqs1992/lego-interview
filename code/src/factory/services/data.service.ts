@@ -16,7 +16,7 @@ export class DataService {
   ) {}
 
   async processDeviceData(deviceId: string, data: Record<string, any>) {
-    const device = await this.devicesRepository.findOne({ where: { id: deviceId } });
+    const device = await this.devicesRepository.findById(deviceId);
 
     if (!device) {
       const msg = `Device with ID "${deviceId}" not found`;
@@ -37,6 +37,22 @@ export class DataService {
     this.logger.log(`Stored data for device ${deviceId} with data ID ${deviceData.id}`);
 
     return deviceData;
+  }
+
+  async getDeviceData(deviceId: string) {
+    const device = await this.devicesRepository.findDeviceWithDataById(deviceId);
+
+    if (!device) {
+      const msg = `Device with ID "${deviceId}" not found`;
+      this.logger.error(msg);
+      throw new NotFoundException(msg);
+    }
+
+    return device.dataRecords.map((dataRecord) => ({
+      id: dataRecord.id,
+      createdAt: dataRecord.createdAt,
+      ...dataRecord.data,
+    }));
   }
 
   private async validateData(dataType: DeviceDataType, data: Record<string, any>): Promise<void> {

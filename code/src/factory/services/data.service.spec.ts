@@ -11,7 +11,7 @@ describe('DataService', () => {
   let service: DataService;
 
   const devicesRepositoryMock: Partial<jest.Mocked<DevicesRepository>> = {
-    findOne: jest.fn(),
+    findById: jest.fn(),
   };
 
   const deviceDataRepositoryMock: Partial<jest.Mocked<DeviceDataRepository>> = {
@@ -45,7 +45,7 @@ describe('DataService', () => {
   describe('.processDeviceData', () => {
     describe('when device does not exist', () => {
       it('should throw NotFoundException', async () => {
-        devicesRepositoryMock.findOne!.mockResolvedValue(null);
+        devicesRepositoryMock.findById!.mockResolvedValue(null);
 
         await expect(service.processDeviceData('nonexistent-device', {})).rejects.toThrow(NotFoundException);
         await expect(service.processDeviceData('nonexistent-device', {})).rejects.toThrow(
@@ -62,7 +62,7 @@ describe('DataService', () => {
           dataType: null,
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockDevice as DeviceEntity);
 
         await expect(service.processDeviceData('device-1', {})).rejects.toThrow(NotFoundException);
       });
@@ -87,7 +87,7 @@ describe('DataService', () => {
           createdAt: new Date(),
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockThermometerDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockThermometerDevice as DeviceEntity);
         deviceDataRepositoryMock.createDeviceData!.mockResolvedValue(mockDeviceData as DeviceDataEntity);
 
         const result = await service.processDeviceData('thermometer-device-1', validThermometerData);
@@ -101,7 +101,7 @@ describe('DataService', () => {
           humidity: 60,
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockThermometerDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockThermometerDevice as DeviceEntity);
 
         await expect(service.processDeviceData('thermometer-device-1', invalidData)).rejects.toThrow(BadRequestException);
       });
@@ -112,7 +112,7 @@ describe('DataService', () => {
           humidity: 150, // Max is 100
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockThermometerDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockThermometerDevice as DeviceEntity);
 
         await expect(service.processDeviceData('thermometer-device-1', invalidData)).rejects.toThrow(BadRequestException);
       });
@@ -124,7 +124,7 @@ describe('DataService', () => {
           extraField: 'not allowed',
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockThermometerDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockThermometerDevice as DeviceEntity);
 
         await expect(service.processDeviceData('thermometer-device-1', invalidData)).rejects.toThrow(BadRequestException);
       });
@@ -150,7 +150,7 @@ describe('DataService', () => {
           createdAt: new Date(),
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
         deviceDataRepositoryMock.createDeviceData!.mockResolvedValue(mockDeviceData as DeviceDataEntity);
 
         const result = await service.processDeviceData('color-sensor-device-1', validColorQualityData);
@@ -166,7 +166,7 @@ describe('DataService', () => {
           brightness: 200,
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
 
         await expect(service.processDeviceData('color-sensor-device-1', invalidData)).rejects.toThrow(BadRequestException);
       });
@@ -178,7 +178,7 @@ describe('DataService', () => {
           brightness: 200,
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
 
         await expect(service.processDeviceData('color-sensor-device-1', invalidData)).rejects.toThrow(BadRequestException);
       });
@@ -190,7 +190,7 @@ describe('DataService', () => {
           brightness: 300, // Max is 255
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
 
         await expect(service.processDeviceData('color-sensor-device-1', invalidData)).rejects.toThrow(BadRequestException);
       });
@@ -201,7 +201,7 @@ describe('DataService', () => {
           // missing colorAccuracy and brightness
         };
 
-        devicesRepositoryMock.findOne!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
+        devicesRepositoryMock.findById!.mockResolvedValue(mockColorQualityDevice as DeviceEntity);
 
         await expect(service.processDeviceData('color-sensor-device-1', invalidData)).rejects.toThrow(BadRequestException);
       });

@@ -1,4 +1,4 @@
-import { Controller, Get, Logger, Param, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Logger, Param, ParseUUIDPipe, Post } from '@nestjs/common';
 import { QueueService } from '../../shared/queue/queue.service';
 import { ApiParam, ApiTags } from '@nestjs/swagger';
 import { QueuePattern } from '../../shared/queue/queue.pattern';
@@ -18,7 +18,7 @@ export class FakeDeviceController {
     type: 'string',
     format: 'uuid',
   })
-  @Get('/:id/heartbeat')
+  @Post('/:id/heartbeat')
   testEmit(@Param('id', ParseUUIDPipe) id: string) {
     this.queueService.emitMessage(QueuePattern.DEVICE_HEARTBEAT, id, {});
     const message = `Emitted heartbeat for device ${id}`;
@@ -32,7 +32,7 @@ export class FakeDeviceController {
     type: 'string',
     format: 'uuid',
   })
-  @Get('/:id/thermometer')
+  @Post('/:id/thermometer')
   testThermometer(@Param('id', ParseUUIDPipe) id: string) {
     const data = {
       temperature: Math.round((20 + Math.random() * 10) * 10) / 10,
@@ -50,7 +50,7 @@ export class FakeDeviceController {
     type: 'string',
     format: 'uuid',
   })
-  @Get(':id/color-quality')
+  @Post(':id/color-quality')
   testColorQuality(@Param('id', ParseUUIDPipe) id: string) {
     const data: ColorQualityData = {
       detectedColor: '#ff5733',
@@ -69,7 +69,7 @@ export class FakeDeviceController {
     type: 'string',
     format: 'uuid',
   })
-  @Get(':id/invalid-data')
+  @Post(':id/invalid-data')
   testInvalidData(@Param('id', ParseUUIDPipe) id: string) {
     const data = {
       invalidField1: 'some string',

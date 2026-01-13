@@ -12,7 +12,7 @@ describe('DeviceService', () => {
   let service: DeviceService;
 
   const devicesRepositoryMock: Partial<jest.Mocked<DevicesRepository>> = {
-    findOne: jest.fn(),
+    findById: jest.fn(),
     listDevicesWithLatestHeartbeat: jest.fn(),
   };
 
@@ -52,7 +52,7 @@ describe('DeviceService', () => {
 
   describe('.restartDevice', () => {
     it('should emit a device reboot message', async () => {
-      devicesRepositoryMock.findOne!.mockResolvedValue({ id: 'device123' } as DeviceEntity);
+      devicesRepositoryMock.findById!.mockResolvedValue({ id: 'device123' } as DeviceEntity);
 
       await service.restartDevice('device123');
 
@@ -60,7 +60,7 @@ describe('DeviceService', () => {
     });
 
     it('should throw NotFoundException if device does not exist', async () => {
-      devicesRepositoryMock.findOne!.mockResolvedValue(null);
+      devicesRepositoryMock.findById!.mockResolvedValue(null);
 
       await expect(service.restartDevice('nonexistentDevice')).rejects.toThrow('Device with ID "nonexistentDevice" not found');
     });
@@ -83,6 +83,7 @@ describe('DeviceService', () => {
           imageName: 'image-v1',
           createdAt: subMinutes(now, 5), // 5 minutes ago - should be online
         },
+        dataRecords: [],
       };
 
       devicesRepositoryMock.listDevicesWithLatestHeartbeat!.mockResolvedValue({
@@ -121,6 +122,7 @@ describe('DeviceService', () => {
           imageName: 'image-v1',
           createdAt: subMinutes(now, 15),
         },
+        dataRecords: [],
       };
 
       devicesRepositoryMock.listDevicesWithLatestHeartbeat!.mockResolvedValue({
@@ -153,6 +155,7 @@ describe('DeviceService', () => {
         group: { id: 'group-3', name: 'Group C', devices: [], createdAt: new Date('2025-01-01') },
         heartbeats: [],
         latestHeartbeat: undefined,
+        dataRecords: [],
       };
 
       devicesRepositoryMock.listDevicesWithLatestHeartbeat!.mockResolvedValue({

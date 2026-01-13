@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { DeviceController } from './device.controller';
 import { DeviceService } from '../services/device.service';
 import { ListDevicesResult } from '../device.types';
+import { DataService } from '../services/data.service';
 
 describe('DeviceController', () => {
   let controller: DeviceController;
@@ -12,10 +13,17 @@ describe('DeviceController', () => {
     createDevice: jest.fn(),
   };
 
+  const dataServiceMock: Partial<jest.Mocked<DataService>> = {
+    getDeviceData: jest.fn(),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [DeviceController],
-      providers: [{ provide: DeviceService, useValue: deviceServiceMock }],
+      providers: [
+        { provide: DeviceService, useValue: deviceServiceMock },
+        { provide: DataService, useValue: dataServiceMock },
+      ],
     }).compile();
 
     controller = module.get<DeviceController>(DeviceController);
@@ -54,6 +62,14 @@ describe('DeviceController', () => {
       const createDeviceDto = { name: 'New Device', groupId: 'group123', macAddress: '00:11:22:33:44:55' };
       await controller.createDevice(createDeviceDto);
       expect(deviceServiceMock.createDevice).toHaveBeenCalledWith(createDeviceDto);
+    });
+  });
+
+  describe('.getDeviceData', () => {
+    it('should call dataService.getDeviceData', async () => {
+      const deviceId = 'device123';
+      await controller.getDeviceData(deviceId);
+      expect(dataServiceMock.getDeviceData).toHaveBeenCalledWith(deviceId);
     });
   });
 });

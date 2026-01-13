@@ -93,6 +93,27 @@ describe('DevicesRepository', () => {
     });
   });
 
+  describe('.findById', () => {
+    it('finds a device by id', async () => {
+      const group = await groupsRepository.createGroup('Find Device Group');
+      const payload: CreateDeviceDto = {
+        name: 'Find Me',
+        macAddress: '11:22:33:44:55:66',
+        groupId: group.id,
+      };
+      const { id } = await repository.createDevice(payload);
+
+      const found = await repository.findById(id);
+      expect(found).toBeDefined();
+      expect(found?.name).toBe('Find Me');
+    });
+
+    it('returns null if not found', async () => {
+      const found = await repository.findById('1fa17e55-5889-46fa-b419-b59ca3b8ee56');
+      expect(found).toBeNull();
+    });
+  });
+
   describe('.listDevicesWithLatestHeartbeat', () => {
     it('lists devices with pagination', async () => {
       const group = await groupsRepository.createGroup('Pagination Device Group');
@@ -154,4 +175,6 @@ describe('DevicesRepository', () => {
       expect(devices[0].latestHeartbeat!.imageName).toBe('image version 3');
     });
   });
+
+  describe('findDeviceWithDataById', () => {});
 });

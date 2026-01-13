@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { DeviceEntity } from '../../entities/device.entity';
-import { CreateDeviceDto, ListDevicesPayload } from '../../dtos/device.dto';
+import { CreateDeviceDto, DevicesListResult, ListDevicesPayload } from '../../dtos/device.dto';
 import { GroupEntity } from '../../entities/group.entity';
 import { DeviceLatestHeartbeatView } from '../../views/device-latest-heartbeat.view';
 import { parseDeviceDataType } from '../../enums/device-data-type.enum';
@@ -16,7 +16,11 @@ export class DevicesRepository extends Repository<DeviceEntity> {
     return this.findOne({ where: { macAddress } });
   }
 
-  async listDevicesWithLatestHeartbeat(payload: ListDevicesPayload): Promise<{ devices: DeviceEntity[]; total: number }> {
+  findById(id: string): Promise<DeviceEntity | null> {
+    return this.findOne({ where: { id } });
+  }
+
+  async listDevicesWithLatestHeartbeat(payload: ListDevicesPayload): Promise<DevicesListResult> {
     const { page = 1, limit = 10, groupId } = payload;
 
     const queryBuilder = this.createQueryBuilder('device')
@@ -64,5 +68,13 @@ export class DevicesRepository extends Repository<DeviceEntity> {
     });
 
     return this.save(device);
+  }
+
+  async findDeviceWithDataById(id: string): Promise<DeviceEntity | null> {
+    return this.findOne({
+      where: { id },
+      relations: ['group', 'dataRecords'],
+      order: { dataRecords: { createdAt: 'DESC' } },
+    });
   }
 }
